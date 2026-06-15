@@ -52,6 +52,7 @@ class PoseLandmarkerHelper(
         setupPoseLandmarker()
     }
 
+    @Synchronized
     fun clearPoseLandmarker() {
         poseLandmarker?.close()
         poseLandmarker = null
@@ -67,7 +68,9 @@ class PoseLandmarkerHelper(
     // that are created on the main thread and used on a background thread, but
     // the GPU delegate needs to be used on the thread that initialized the
     // Landmarker
+    @Synchronized
     fun setupPoseLandmarker() {
+        if (poseLandmarker != null) return
         // Set general pose landmarker options
         val baseOptionBuilder = BaseOptions.builder()
 
@@ -170,8 +173,7 @@ class PoseLandmarkerHelper(
                 Bitmap.Config.ARGB_8888
             )
 
-        imageProxy.use { bitmapBuffer.copyPixelsFromBuffer(imageProxy.planes[0].buffer) }
-        imageProxy.close()
+        bitmapBuffer.copyPixelsFromBuffer(imageProxy.planes[0].buffer)
 
         val matrix = Matrix().apply {
             // Rotate the frame received from the camera to be in the same direction as it'll be shown

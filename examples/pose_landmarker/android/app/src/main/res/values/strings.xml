@@ -1,59 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    ~ Copyright 2023 The TensorFlow Authors. All Rights Reserved.
-    ~
-    ~ Licensed under the Apache License, Version 2.0 (the "License");
-    ~ you may not use this file except in compliance with the License.
-    ~ You may obtain a copy of the License at
-    ~
-    ~       http://www.apache.org/licenses/LICENSE-2.0
-    ~
-    ~ Unless required by applicable law or agreed to in writing, software
-    ~ distributed under the License is distributed on an "AS IS" BASIS,
-    ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    ~ See the License for the specific language governing permissions and
-    ~ limitations under the License.
--->
 <resources>
-    <string name="app_name">Pose Landmarker</string>
-
+    <string name="app_name">HeadUp</string>
     <string name="media_pipe">MediaPipe</string>
 
-    <string name="alt_bottom_sheet_chevron">Bottom sheet expandable indicator</string>
-
-    <string name="alt_bottom_sheet_max_results_button_minus">Decreasing
-        maximum pose results button</string>
-    <string name="alt_bottom_sheet_max_results_button_plus">Increasing
-        maximum pose results button</string>
-    <string name="alt_bottom_sheet_threshold_button_minus">Decreasing
-        threshold of pose detect results button</string>
-    <string name="alt_bottom_sheet_threshold_button_plus">Increasing
-        threshold of pose detect results button</string>
-    <string name="menu_camera">Camera</string>
+    <string name="menu_camera">Scan</string>
     <string name="menu_gallery">Gallery</string>
-    <string name="tv_gallery_placeholder">Click + to add an image or a video
-        to begin running the pose landmarker.</string>
+    <string name="menu_stats">Stats</string>
+    <string name="menu_challenge">Challenge</string>
+    <string name="menu_shop">Shop</string>
+    <string name="headup_notification">Notifications</string>
+    <string name="headup_settings">Settings</string>
 
+    <string name="settings_title">Settings</string>
+    <string name="settings_language">App language</string>
+    <string name="settings_overlay">Red border permission</string>
+    <string name="settings_calibration">3-second posture calibration</string>
+    <string name="settings_reset_data">Reset posture records</string>
+    <string name="language_title">Choose language</string>
+    <string name="language_english">English</string>
+    <string name="language_chinese">Traditional Chinese</string>
+    <string name="notification_permission_granted">HeadUp notifications enabled</string>
+    <string name="notification_permission_denied">Notifications are off. Background protection will continue.</string>
+    <string name="overlay_permission_title">Enable posture warning border</string>
+    <string name="overlay_permission_message">Allow HeadUp to draw over other apps so it can show a red border after 3 seconds of continuous poor posture.</string>
+    <string name="overlay_permission_open">Open settings</string>
+    <string name="overlay_permission_later">Later</string>
+    <string name="overlay_permission_enabled">Red warning border is enabled</string>
+
+    <string name="splash_ai_processing">Loading…</string>
+    <string name="scan_view">Scan View</string>
+    <string name="posture_scan_results">Posture scan results</string>
+    <string name="posture_reading">Reading posture…</string>
+    <string name="set_baseline">Set baseline</string>
+    <string name="calibrate_three_seconds">Calibrate</string>
+    <string name="calibration_countdown">Sit upright · %1$d</string>
+    <string name="calibration_prepare">Sit upright and face the screen. Calibration will start when your pose is detected.</string>
+    <string name="calibration_wait_for_pose">Wait until your face and shoulders are detected.</string>
+    <string name="calibration_complete">Personal posture baseline saved.</string>
+    <string name="calibration_failed">Calibration failed. Keep your face and shoulders visible and try again.</string>
+    <string name="baseline_set">Baseline set: %1$d°</string>
+    <string name="switch_camera">Switch camera</string>
+    <string name="camera_front">Front camera</string>
+    <string name="camera_back">Rear camera</string>
+    <string name="camera_start_failed">Camera could not start. Switch tabs and try again.</string>
+    <string name="head_forward_tilt">Head forward tilt</string>
+    <string name="neck_curve">Neck curve</string>
+    <string name="shoulder_balance">Shoulder balance</string>
+    <string name="screen_distance">Screen distance</string>
+    <string name="distance_requires_calibration">Calibrate to estimate</string>
+    <string name="distance_too_close">Too close</string>
+    <string name="distance_normal">Comfortable distance</string>
+    <string name="centimeters_format">%1$d cm</string>
+    <string name="reading">Reading</string>
+    <string name="posture_safe_format">Current %1$d°, posture is safe.</string>
+    <string name="posture_warning_format">Current %1$d°, warning range.</string>
+    <string name="posture_danger_format">Current %1$d°, please raise your head.</string>
+    <string name="posture_normal">Normal</string>
+    <string name="posture_mild_tilt">Mild forward tilt</string>
+    <string name="posture_large_tilt">Excessive forward tilt</string>
+    <string name="posture_alert">Alert</string>
+    <string name="posture_poor">Poor posture</string>
+    <string name="posture_balanced">Balanced</string>
+    <string name="posture_unbalanced">Left/right imbalance</string>
+
+    <string name="stats_title">Stats</string>
+    <string name="current_neck_angle">Current neck angle</string>
+    <string name="daily_tasks">Daily tasks</string>
+    <string name="cumulative_points">Points</string>
+    <string name="protect_eyes">Protect eyes</string>
+    <string name="good_posture_today">Good posture today</string>
+    <string name="streak_days">Streak</string>
+    <string name="days_format">%1$d days</string>
+    <string name="task_good_posture">Maintain good posture for 30 minutes</string>
+    <string name="task_eye_rest">Complete eye-rest training</string>
+    <string name="task_posture_challenge">Join posture challenge</string>
+    <string name="parent_dashboard">Parent dashboard</string>
+    <string name="today_posture_distribution">Today posture distribution</string>
+    <string name="weekly_bad_posture_events">Poor-posture events over 7 days</string>
+    <string name="safe_posture_percent">Good posture %1$d%%</string>
+    <string name="bad_posture_percent">Needs attention %1$d%%</string>
+    <string name="tracked_time">Tracked %1$s today</string>
+    <string name="hours_minutes_format">%1$dh %2$dm</string>
+    <string name="minutes_only_format">%1$d min</string>
+    <string name="challenge_progress_format">%1$d/%2$d complete</string>
+    <string name="claim_reward">Claim</string>
+    <string name="claimed">Claimed</string>
+    <string name="reward_claimed">Reward claimed.</string>
+    <string name="reward_already_claimed">This reward has already been claimed.</string>
+    <string name="task_not_complete">Complete the task before claiming its reward.</string>
+    <string name="eye_rest_title">20-20-20 eye break</string>
+    <string name="eye_rest_message">Look at something far away and rest your eyes. Confirm after completing the break.</string>
+    <string name="eye_rest_complete">I completed it</string>
+    <string name="eye_rest_recorded">Eye break recorded.</string>
+
+    <string name="challenge_title">Challenge</string>
+    <string name="my_vision_dragon">My Vision Dragon</string>
+    <string name="little_blue">Little Blue</string>
+    <string name="dragon_energy_good">Energy %1$d%% · Great performance today</string>
+    <string name="dragon_energy_rest">Energy %1$d%% · Needs a little rest</string>
+    <string name="dragon_mood_safe">Little Blue is charging</string>
+    <string name="dragon_mood_warning">Little Blue reminds you to look up</string>
+    <string name="dragon_mood_danger">Little Blue needs a rest</string>
+    <string name="maintain_posture_30">Maintain good posture\n30 minutes</string>
+    <string name="times_format">%1$d/%2$d times</string>
+    <string name="minutes_progress_format">%1$d/%2$d minutes</string>
+    <string name="record_eye_rest">Record break</string>
+    <string name="vision_dragon_animation">Vision Dragon animation. Tap to pause or play.</string>
+
+    <string name="shop_title">Shop</string>
+    <string name="health_points">Health points</string>
+    <string name="dragon_styles">Vision Dragon styles</string>
+    <string name="reward_redemption">Rewards</string>
+    <string name="shop_starlight_armor">Starlight armor</string>
+    <string name="shop_starlight_detail">Vision Dragon style</string>
+    <string name="shop_ocean_background">Ocean background</string>
+    <string name="shop_ocean_detail">Soft Scan background</string>
+    <string name="shop_eye_time_ticket">Eye-care time ticket</string>
+    <string name="shop_eye_time_detail">Redeem 30 minutes of entertainment</string>
+    <string name="shop_focus_badge">Focus badge</string>
+    <string name="shop_focus_detail">7-day streak reward</string>
+    <string name="shop_redeemable">Redeem</string>
+    <string name="shop_owned">Owned</string>
+    <string name="shop_cost_format">%1$d pts</string>
+    <string name="shop_purchase_success">Item redeemed.</string>
+    <string name="shop_already_owned">You already own this item.</string>
+    <string name="shop_not_enough_points">Not enough health points.</string>
+    <string name="shop_purchase_failed">Unable to redeem this item.</string>
+
+    <string name="reset_data_title">Reset all posture data?</string>
+    <string name="reset_data_message">This deletes local posture history, calibration, task progress, and rewards.</string>
+    <string name="reset_data_confirm">Reset</string>
+    <string name="reset_data_complete">Local HeadUp data reset.</string>
+
+    <string name="notification_guard_title">HeadUp background protection</string>
+    <string name="notification_guard_text">%1$d° · %2$s</string>
+    <string name="notification_channel_name">HeadUp posture detection</string>
+    <string name="posture_status_safe">Good posture. Keep your HeadUp!</string>
+    <string name="posture_status_warning">Approaching the warning range.</string>
+    <string name="posture_status_danger">Poor posture detected. Please look up.</string>
+
+    <string name="alt_bottom_sheet_chevron">Bottom sheet expandable indicator</string>
+    <string name="alt_bottom_sheet_max_results_button_minus">Decrease maximum results</string>
+    <string name="alt_bottom_sheet_max_results_button_plus">Increase maximum results</string>
+    <string name="alt_bottom_sheet_threshold_button_minus">Decrease threshold</string>
+    <string name="alt_bottom_sheet_threshold_button_plus">Increase threshold</string>
+    <string name="tv_gallery_placeholder">Select an image or video to run pose detection.</string>
     <string name="label_inference_time">Inference Time</string>
     <string name="label_fps">Frames per Second</string>
-    <string name="label_pose_detection_confidence_threshold">Detection
-        Threshold</string>
-    <string name="label_pose_tracking_confidence_threshold">Tracking
-        Threshold</string>
-    <string name="label_pose_presence_confidence_threshold">Presence
-        Threshold</string>
+    <string name="label_pose_detection_confidence_threshold">Detection Threshold</string>
+    <string name="label_pose_tracking_confidence_threshold">Tracking Threshold</string>
+    <string name="label_pose_presence_confidence_threshold">Presence Threshold</string>
     <string name="label_num_poses">Number of Poses</string>
     <string name="label_delegate">Delegate</string>
     <string name="label_models">Model</string>
-
-    <string-array name="delegate_spinner_titles">
-        <item>CPU</item>
-        <item>GPU</item>
-    </string-array>
-
-    <string-array name="models_spinner_titles">
-        <item>Pose Landmarker Full</item>
-        <item>Pose Landmarker Lite</item>
-        <item>Pose Landmarker Heavy</item>
-    </string-array>
+    <string-array name="delegate_spinner_titles"><item>CPU</item><item>GPU</item></string-array>
+    <string-array name="models_spinner_titles"><item>Pose Landmarker Full</item><item>Pose Landmarker Lite</item><item>Pose Landmarker Heavy</item></string-array>
 </resources>

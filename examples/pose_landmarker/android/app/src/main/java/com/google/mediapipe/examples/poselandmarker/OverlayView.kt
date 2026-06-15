@@ -1,118 +1,135 @@
 /*
  * Copyright 2023 The TensorFlow Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Licensed under the Apache License, Version 2.0.
  */
 package com.google.mediapipe.examples.poselandmarker
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Path
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.google.mediapipe.tasks.vision.core.RunningMode
-import com.google.mediapipe.tasks.vision.poselandmarker.PoseLandmarker
 import com.google.mediapipe.tasks.vision.poselandmarker.PoseLandmarkerResult
-import kotlin.math.max
 import kotlin.math.min
 
-class OverlayView(context: Context?, attrs: AttributeSet?) :
-    View(context, attrs) {
-
+class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
     private var results: PoseLandmarkerResult? = null
-    private var pointPaint = Paint()
-    private var linePaint = Paint()
-
-    private var scaleFactor: Float = 1f
-    private var imageWidth: Int = 1
-    private var imageHeight: Int = 1
+    private val pointPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val linePaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private var scaleFactor = 1f
+    private var offsetX = 0f
+    private var offsetY = 0f
+    private var imageWidth = 1
+    private var imageHeight = 1
+    private var postureZone = PostureZone.SAFE
 
     init {
-        initPaints()
+        linePaint.strokeWidth = LANDMARK_STROKE_WIDTH
+        linePaint.style = Paint.Style.STROKE
+        linePaint.strokeCap = Paint.Cap.ROUND
+        pointPaint.style = Paint.Style.FILL
+        applyZoneColor()
     }
 
     fun clear() {
         results = null
-        pointPaint.reset()
-        linePaint.reset()
         invalidate()
-        initPaints()
     }
 
-    private fun initPaints() {
-        linePaint.color =
-            ContextCompat.getColor(context!!, R.color.mp_color_primary)
-        linePaint.strokeWidth = LANDMARK_STROKE_WIDTH
-        linePaint.style = Paint.Style.STROKE
+    override fun onDraw(canvas: Canvas) {
+        super.onDraw(canvas)
+        val landmarks = results?.landmarks()?.firstOrNull() ?: return
+        applyZoneColor()
 
-        pointPaint.color = Color.YELLOW
-        pointPaint.strokeWidth = LANDMARK_STROKE_WIDTH
-        pointPaint.style = Paint.Style.FILL
-    }
-
-    override fun draw(canvas: Canvas) {
-        super.draw(canvas)
-        results?.let { poseLandmarkerResult ->
-            for(landmark in poseLandmarkerResult.landmarks()) {
-                for(normalizedLandmark in landmark) {
-                    canvas.drawPoint(
-                        normalizedLandmark.x() * imageWidth * scaleFactor,
-                        normalizedLandmark.y() * imageHeight * scaleFactor,
-                        pointPaint
-                    )
-                }
-
-                PoseLandmarker.POSE_LANDMARKS.forEach {
-                    canvas.drawLine(
-                        poseLandmarkerResult.landmarks().get(0).get(it!!.start()).x() * imageWidth * scaleFactor,
-                        poseLandmarkerResult.landmarks().get(0).get(it.start()).y() * imageHeight * scaleFactor,
-                        poseLandmarkerResult.landmarks().get(0).get(it.end()).x() * imageWidth * scaleFactor,
-                        poseLandmarkerResult.landmarks().get(0).get(it.end()).y() * imageHeight * scaleFactor,
-                        linePaint)
-                }
+        // MediaPipe Pose indices: face 0..10, shoulders 11..12, hips 23..24.
+        (0..12).forEach { index ->
+            landmarks.getOrNull(index)?.let { point ->
+                pointPaint.color = landmarkColor(index)
+                canvas.drawCircle(mapX(point.x()), mapY(point.y()), POINT_RADIUS, pointPaint)
             }
         }
+        listOf(23, 24).forEach { index ->
+            landmarks.getOrNull(index)?.let { point ->
+                pointPaint.color = landmarkColor(index)
+                canvas.drawCircle(mapX(point.x()), mapY(point.y()), POINT_RADIUS, pointPaint)
+            }
+        }
+
+        drawConnection(canvas, landmarks, 11, 12)
+        drawConnection(canvas, landmarks, 11, 23)
+        drawConnection(canvas, landmarks, 12, 24)
+        drawConnection(canvas, landmarks, 23, 24)
+        drawConnection(canvas, landmarks, 7, 3)
+        drawConnection(canvas, landmarks, 6, 8)
+        drawConnection(canvas, landmarks, 9, 10)
+
+        val facePathIndices = listOf(3, 2, 1, 0, 4, 5, 6)
+        val facePath = Path()
+        facePathIndices.forEachIndexed { pathIndex, landmarkIndex ->
+            landmarks.getOrNull(landmarkIndex)?.let { point ->
+                if (pathIndex == 0) facePath.moveTo(mapX(point.x()), mapY(point.y()))
+                else facePath.lineTo(mapX(point.x()), mapY(point.y()))
+            }
+        }
+        canvas.drawPath(facePath, linePaint)
     }
+
+    private fun drawConnection(
+        canvas: Canvas,
+        landmarks: List<com.google.mediapipe.tasks.components.containers.NormalizedLandmark>,
+        startIndex: Int,
+        endIndex: Int,
+    ) {
+        val start = landmarks.getOrNull(startIndex) ?: return
+        val end = landmarks.getOrNull(endIndex) ?: return
+        canvas.drawLine(mapX(start.x()), mapY(start.y()), mapX(end.x()), mapY(end.y()), linePaint)
+    }
+
+    private fun applyZoneColor() {
+        val color = when (postureZone) {
+            PostureZone.SAFE -> ContextCompat.getColor(context, R.color.headup_safe)
+            PostureZone.WARNING -> ContextCompat.getColor(context, R.color.headup_warning)
+            PostureZone.DANGER -> ContextCompat.getColor(context, R.color.headup_danger)
+        }
+        linePaint.color = color
+        pointPaint.color = color
+    }
+
+    private fun landmarkColor(index: Int): Int = when (index) {
+        1, 2, 3, 4, 5, 6 -> ContextCompat.getColor(context, R.color.headup_primary)
+        7, 8 -> ContextCompat.getColor(context, R.color.headup_purple)
+        9, 10 -> ContextCompat.getColor(context, R.color.headup_orange)
+        else -> linePaint.color
+    }
+
+    private fun mapX(normalizedX: Float): Float = normalizedX * imageWidth * scaleFactor + offsetX
+
+    private fun mapY(normalizedY: Float): Float = normalizedY * imageHeight * scaleFactor + offsetY
 
     fun setResults(
         poseLandmarkerResults: PoseLandmarkerResult,
         imageHeight: Int,
         imageWidth: Int,
-        runningMode: RunningMode = RunningMode.IMAGE
+        runningMode: RunningMode = RunningMode.IMAGE,
+        zone: PostureZone = PostureZone.SAFE,
     ) {
         results = poseLandmarkerResults
-
         this.imageHeight = imageHeight
         this.imageWidth = imageWidth
+        postureZone = zone
 
-        scaleFactor = when (runningMode) {
-            RunningMode.IMAGE,
-            RunningMode.VIDEO -> {
-                min(width * 1f / imageWidth, height * 1f / imageHeight)
-            }
-            RunningMode.LIVE_STREAM -> {
-                // PreviewView is in FILL_START mode. So we need to scale up the
-                // landmarks to match with the size that the captured images will be
-                // displayed.
-                max(width * 1f / imageWidth, height * 1f / imageHeight)
-            }
-        }
+        // PreviewView uses FIT_CENTER, so the overlay must use the same letterbox transform.
+        scaleFactor = min(width.toFloat() / imageWidth, height.toFloat() / imageHeight)
+        offsetX = (width - imageWidth * scaleFactor) / 2f
+        offsetY = (height - imageHeight * scaleFactor) / 2f
         invalidate()
     }
 
     companion object {
-        private const val LANDMARK_STROKE_WIDTH = 12F
+        private const val LANDMARK_STROKE_WIDTH = 7f
+        private const val POINT_RADIUS = 7f
     }
 }

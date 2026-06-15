@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/bg_headup_nav_item_selected"
+        android:state_checked="true" />
+    <item>
+        <shape>
+            <solid android:color="@android:color/transparent" />
+            <corners android:radius="18dp" />
+        </shape>
+    </item>
+</selector>

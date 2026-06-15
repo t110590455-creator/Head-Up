@@ -48,4 +48,19 @@
         android:id="@+id/gallery_fragment"
         android:name="com.google.mediapipe.examples.poselandmarker.fragment.GalleryFragment"
         android:label="GalleryFragment" />
+
+    <fragment
+        android:id="@+id/stats_fragment"
+        android:name="com.google.mediapipe.examples.poselandmarker.fragment.StatsFragment"
+        android:label="StatsFragment" />
+
+    <fragment
+        android:id="@+id/challenge_fragment"
+        android:name="com.google.mediapipe.examples.poselandmarker.fragment.ChallengeFragment"
+        android:label="ChallengeFragment" />
+
+    <fragment
+        android:id="@+id/shop_fragment"
+        android:name="com.google.mediapipe.examples.poselandmarker.fragment.ShopFragment"
+        android:label="ShopFragment" />
 </navigation>

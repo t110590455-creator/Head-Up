@@ -16,7 +16,8 @@
 
 plugins {
     id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-android'
+    id 'org.jetbrains.kotlin.kapt'
     id 'de.undercouch.download'
 }
 
@@ -51,6 +52,9 @@ android {
     buildFeatures {
         viewBinding true
     }
+    androidResources {
+        generateLocaleConfig true
+    }
 }
 
 // import DownloadMPTasks task
@@ -63,10 +67,17 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.8.0'
 
     // App compat and UI things
-    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'androidx.appcompat:appcompat:1.7.1'
     implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.fragment:fragment-ktx:1.5.4'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.7'
+
+    // Persistent posture history
+    def room_version = '2.7.2'
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 
     // Navigation library
     def nav_version = "2.5.3"

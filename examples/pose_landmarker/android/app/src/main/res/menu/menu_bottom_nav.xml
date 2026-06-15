@@ -17,11 +17,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@id/camera_fragment"
-        android:icon="@drawable/ic_baseline_photo_camera_24"
+        android:icon="@drawable/ic_scan_headup"
         android:title="@string/menu_camera" />
 
     <item
-        android:id="@id/gallery_fragment"
-        android:icon="@drawable/ic_baseline_photo_library_24"
-        android:title="@string/menu_gallery" />
+        android:id="@id/stats_fragment"
+        android:icon="@drawable/ic_stats_headup"
+        android:title="@string/menu_stats" />
+
+    <item
+        android:id="@id/challenge_fragment"
+        android:icon="@drawable/ic_challenge_headup"
+        android:title="@string/menu_challenge" />
+
+    <item
+        android:id="@id/shop_fragment"
+        android:icon="@drawable/ic_shop_headup"
+        android:title="@string/menu_shop" />
 </menu>
